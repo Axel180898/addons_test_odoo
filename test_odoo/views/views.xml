@@ -1,0 +1,253 @@
+<odoo>
+  <data>
+    <!-- explicit form view definition -->
+    <record model="ir.ui.view" id="test_odoo.form_line">
+      <field name="name">test_odoo.form</field>
+      <field name="model">test_odoo.test_odoo</field>
+      <field name="arch" type="xml">
+        <form string="Test_odoo">
+          <header>
+            <button string="Test" name="test_pr" type="object" class="oe_highlight"/>
+            <button string="Newtest" name="NewTest" type="object" class="oe_highlight"/>
+            <button string="cancel_Orders" name="cancel_Orders" type="object" class="oe_highlight" />
+            <field name="status" widget="statusbar"/>
+          </header>
+          <sheet>
+            <!-- caja de botones -->
+
+            <div class="oe_button_box" name="button_box">
+              <button name="%(sales_partner_view_action)d" type="action" class="oe_stat_button" icon="fa-archive" context="{'default_partner_id': partner_id}">
+                <field name="TotalSales" widget="statinfo" />
+              </button>
+            </div>
+
+            <group string="Test data">
+              <notebook>
+                <page name="infotest" string="infotest">
+                  <group>
+                    <group name="basicData" colspan="1">
+                      <!-- atts required, readonly, invisible -->
+                      <field name="name" attrs="{'required': [('status', '!=', 'active')]}" />
+                      <field name="value" />
+                    </group>
+                    <group colspan="1">
+                      <!-- <field name="hireDate" /> -->
+                      <field name="hireDate" attrs="{'required':[('status','!=','active')]}"/>
+                      <field name="active"/>
+                      <!-- <field name="salary" /> -->
+                      <field name="salary" attrs="{'required':[('status','!=','active')]}"/>
+                    </group>
+                  </group>
+                </page>
+                <page name="infoClienteVentas" string="info Cliente y ventas">
+                  <group>
+                    <field name="partner_id" string="Cliente" domain="[('customer', '=',True)]" options="{'no_quick_create':True,'no_create_edit':True, 'no_open': True}" />
+                    <field name="phone" />
+                    <field name="sale_ids" widget="many2many_tags"/>
+                    <!-- Cambiar de nombre el campo
+                               -->
+                    <label for="street" string="Address"/>
+                    <field name="TotalSales" nolabel="1"/>
+                  </group>
+
+
+
+                  <!-- <group> -->
+                  <!-- <field name="sale_id" domain="[('partner_id','=','partner_id')]" options="{'no_quick_create':True,'no_create_edit':True, 'no_open': True}"/> -->
+                  <field name="binary_field_image" widget="image" string="Imagen"/>
+                       <!-- <field name="binary_field_file" widget="file" string="file"/> -->
+                  <!-- </group> -->
+
+
+
+                  <!-- “colors: danger, info, muted, primary, success, or warning.” -->
+                  <group>
+                    <!-- widgets ulr,email -->
+                    <field name="selectorField" widget="radio" />
+                  </group>
+                  <group string="Detalles">
+                    <field name="details_id" nolabel="1">
+                      <tree>
+                        <field name="descripcion" />
+                        <field name='version'></field>
+                      </tree>
+                    </field>
+                  </group>
+                </page>
+              </notebook>
+
+
+            </group>
+          </sheet>
+          <!-- Your usual form view goes here-->
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <!-- <field name="activity_ids" widget="mail_activity"/> -->
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+    <!-- attrs="{'invisible':[('state','in',['draft','en_proceso'])]}" -->
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="test_odoo.list">
+      <field name="name">test_odoo.list</field>
+      <field name="model">test_odoo.test_odoo</field>
+      <field name="arch" type="xml">
+
+        <tree decoration-danger="selectorField=='selected'">
+          <field name="folio" />
+          <field name="name"/>
+          <field name="value"/>
+          <field name="hireDate"/>
+          <field name="active"/>
+          <field name="salary" />
+          <field name='partner_id' string='Cliente'/>
+          <field name="selectorField" widget="radio " />
+          <field name="TotalSales" />
+          <!-- <field name="sale_ids" /> -->
+        </tree>
+      </field>
+    </record>
+
+    <!-- explicit search view definition -->
+    <record id="view_test_odoo_search" model="ir.ui.view">
+      <field name="name">test_odoo.search</field>
+      <field name="model">test_odoo.test_odoo</field>
+      <field name="arch" type="xml">
+        <search string="TestData">
+          <field name="name"/>
+          <field name='partner_id' string='Cliente'/>
+          <field name="hireDate"/>
+          <filter name="status_inactive" domain="[('status','=','inactive')]" string="inactive"/>
+          <filter name="selectorField_selected" domain="[('selectorField','=','selected')]" string="selected"/>
+          <filter name="Dia de Hoy" domain="[('create_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('create_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+          <!-- <group expand=0 string="Goup by">
+                <filter name="groupByselectorField" domain="[]" context="{'group_by':'selectorField'}"/>
+                </group> -->
+        </search>
+      </field>
+    </record>
+
+
+    <!-- &lt;  (<),&amp;  (&),&gt;  (>),&quot;  ("),&apos;  ('),&#37; (%)-->
+
+    <!-- explicit kanban view definition -->
+    <record id="test_odoo.kanban" model="ir.ui.view">
+      <field name="name">test_odoo.kanban</field>
+      <field name="model">test_odoo.test_odoo</field>
+      <field name="arch" type="xml">
+
+        <kanban>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_global_click">
+                <div class="oe_kanban_details">
+                  <strong>
+                    <ul>
+                      <li>Name :<field name="name"/>
+                      </li>
+                      <li>Hire Date:<field name="hireDate"/>
+                      </li>
+                      <li>Value:<field name="value"/>
+                      </li>
+                      <li>Active:<field name="active"/>
+                      </li>
+                      <li>Salary: <field name="salary" />
+                      </li>
+                    </ul>
+                  </strong>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+
+      </field>
+    </record>
+    <!-- explicit pivot view definition -->
+    <record id="test_odoo.pivot" model="ir.ui.view">
+      <field name="name">test_odoo.list</field>
+      <field name="model">test_odoo.test_odoo</field>
+      <field name="arch" type="xml">
+
+        <pivot string="Test_pivot" disable_linking="true">
+          <field name="salary" type="html">
+            <p class="oe_view_nocontent_create">Enter the target
+            </p>
+          </field>
+        </pivot>
+      </field>
+    </record>
+    <!-- explicit graph view definition -->
+    <record id="test_odoo_view_graph" model="ir.ui.view">
+      <field name="name">test_odoo.kanban</field>
+      <field name="model">test_odoo.test_odoo</field>
+      <field name="arch" type="xml">
+        <graph string="test_datos" type="bar">
+          <field name='partner_id' string='Cliente' type="row"/>
+          <field name="salary" type="measure" />
+
+        </graph>
+      </field>
+    </record>
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="test_odoo.action_window">
+      <field name="name">test_odoo window</field>
+      <field name="res_model">test_odoo.test_odoo</field>
+      <field name="view_mode">kanban,tree,form,pivot,graph</field>
+      <field name="search_view_id" ref="view_test_odoo_search"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="test_odoo.action_window_filter">
+      <field name="name">test_odoo window</field>
+      <field name="res_model">test_odoo.test_odoo</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{"search_default_selectorField_selected":1}</field>
+      <field name="search_view_id" ref="view_test_odoo_search"/>
+    </record>
+    
+    <act_window id="sales_partner_view_action"
+        name="Ordenes"
+        res_model="sale.order"
+        view_mode="tree,form"
+        domain="[('partner_id', '=', default_partner_id)]"
+         />
+    <!-- server action to the one above -->
+
+    <record model="ir.actions.server" id="test_odoo.action_server">
+      <field name="name">test_odoo server</field>
+      <field name="model_id" ref="model_test_odoo_test_odoo"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="test_odoo" id="test_odoo.menu_root"/>
+    <menuitem name="test_odoo_New" id="test_odoo.menu_root_new"/>
+
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="test_odoo.menu_1" parent="test_odoo.menu_root"/>
+    <menuitem name="Menu 2" id="test_odoo.menu_2" parent="test_odoo.menu_root"/>
+    <menuitem name="Menu 3" id="test_odoo.menu_3" parent="sale.menu_sale_invoicing"/>
+
+
+    <!-- actions -->
+
+    <menuitem name="List" id="test_odoo.menu_1_list" parent="test_odoo.menu_1" action="test_odoo.action_window"/>
+    <menuitem name="Server to list" id="test_odoo" parent="test_odoo.menu_2" action="test_odoo.action_server"/>
+
+    <menuitem name="List" id="test_odoo.menu_2_list" parent="test_odoo.menu_3" action="test_odoo.action_window"/>
+    <menuitem name="List-filter" id="test_odoo.menu_2_list_filter" parent="test_odoo.menu_3" action="test_odoo.action_window_filter"/>
+  </data>
+</odoo>

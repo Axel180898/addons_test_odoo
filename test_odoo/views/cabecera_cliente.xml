@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="base.view_partner_form_inherit_cabecera" model="ir.ui.view">
+        <field name="name">inherit_cabecera</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button string="Test" name="test_pr" type="object" class="oe_highlight"/>
+                    <button string="Newtest" name="NewTest" type="object" class="oe_highlight"/>
+                </header>
+            </xpath>
+<!-- agregar atributos de campos -->
+            <!-- <xpath expr="//field@[name='phone']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath> -->
+        </field>
+    </record>
+
+</odoo>

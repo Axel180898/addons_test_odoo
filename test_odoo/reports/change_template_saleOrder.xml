@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="tablePrice" name="tablePrice" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//h2" position="after">
+            <div class="row">
+                <h3>Cambio en un reporte</h3>
+                <p><span t-field="doc.origin"></span></p>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

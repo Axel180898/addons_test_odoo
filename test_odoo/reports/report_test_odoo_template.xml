@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="test_odoo_">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!-- cabecera y pie de pagina -->
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="oe_structure">
+                            <div class="row mb-5">
+                                <div class="col">
+                                    <h2>Report test</h2>
+                                    <p>This report have <span t-field="o.name"/>
+'s information
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="row">
+                                        <strong>Name: </strong>
+                                        <span t-field="o.name"/>
+                                    </div>
+                                    <div class="row">
+                                        <strong>Numero de ventas: </strong>
+                                        <span t-field="o.value"/>
+                                    </div>
+                                    <div class="row">
+                                        <strong>folio: </strong>
+                                        <span t-field="o.folio"/>
+                                    </div>
+                                    <div class="row">
+                                        <strong>hireDate: </strong>
+                                        <span t-field="o.hireDate"/>
+                                    </div>
+
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="row">
+                                        <strong>total sales: </strong>
+                                        <span t-field="o.TotalSales"/>
+                                    </div>
+                                    <div class="row">
+                                        <strong>selectorField: </strong>
+                                        <span t-field="o.selectorField"/>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Descipcion
+                                            </th>
+                                            <th scope="col">Version</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="cantidad_detalles" t-value="0"/>
+                                        <t t-foreach="o.details_id" t-as="d">
+                                            <t t-set="cantidad_detalles" t-value="cantidad_detalles +1"/>
+                                            <tr>
+                                                <th scope="col">
+                                                    <span t-field="d.descripcion"/>
+                                                </th>
+                                                <th scope="col">
+                                                    <span t-field="d.version"/>
+                                                </th>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <span t-esc="cantidad_detalles"/>
+                            </div>
+                            <div class="row">
+                                <!-- <img t-att-src="'/report/barcode/QR/%s' % 'My text in qr code'"/> -->
+                                <div class="col-xs-6">
+                                    <img style="height:200px; width:200px;" t-att-src="'/report/barcode/QR/%s'%'text'"/>
+
+                                </div>
+                                <div class="col-xs-6">
+                                    <!-- <img t-if="o.binary_field_image" t-att-src="image_data_uri(o.binary_field_image)" style="max-height: 50px;" alt="Logo"/> -->
+                                    <div class="card-img-top" t-field="o.binary_field_image" t-options='{"widget": "image"}'
+                                    />
+</div>
+<div class="row">
+                                        <img t-if="o.binary_field_image" t-att-src="'data:image/png;base64,%s' % o.binary_field_image" style="max-height: 45px;"/>
+                                    </div>
+                                    <!-- <img class="barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128','123456', 300, 60)" style="height:60px;" alt="certificado"/> -->
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </odoo>

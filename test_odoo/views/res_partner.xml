@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- vistas heredadas 
+
+
+debes buscar las vistas en el modo desarrollador
+y sacar el id 
+
+
+ -->
+   
+    <record id="descripcion_partnet_add" model="ir.ui.view">
+        <field name="name">Descipcion_partner_add</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+        <!-- inside, before  -->
+            <xpath expr="//page[@name='accounting']" position="after">
+            <page name="add_description" string="Descripcion">
+                <group>
+                    <field name="descripcion"/>
+                </group>
+            </page>
+            </xpath>
+            <xpath expr="//field[@name='trust']" position="after">
+                    <field name="valor"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="resPartner_inherit_notifyEmail" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="mail.view_emails_partner_info_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='notify_email']" position="replace">
+                <field name="notify_email" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
